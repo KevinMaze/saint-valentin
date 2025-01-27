@@ -7,6 +7,22 @@ body {
     font-family: Arial, sans-serif;
     position: relative;
     overflow: hidden;
+    cursor: none;
+}
+
+.cursor {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    background: #ff5252;
+    transform: translate(-50%, -50%);
+    clip-path: path(
+        "M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"
+    );
+    pointer-events: none;
+    z-index: 1000;
 }
 
 .word {
@@ -45,10 +61,11 @@ body {
     max-height: 450px;
     fill: red;
     filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
-    transition: transform 2s ease;
-    cursor: pointer;
+    transition: transform 5s ease-in-out;
+    cursor: none;
     box-shadow: 0 0 0 0 rgba(255, 71, 84, 0.7);
     animation: battement 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    z-index: 1;
 }
 
 #heart:hover {
@@ -58,6 +75,10 @@ body {
 #heart.clicked {
     animation: heartbeat 0.3s ease-in-out;
     transform: translate(-50%, -50%) scale(1.2);
+    max-width: 800px;
+    max-height: 800px;
+    box-shadow: 0 0 0 0 rgba(255, 71, 84, 0.7);
+    fill: white;
 }
 
 @keyframes heartbeat {
@@ -79,14 +100,27 @@ body {
 #message {
     display: none;
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 28px;
     font-weight: bold;
-    color: white;
+    color: red;
     text-align: center;
-    z-index: 1;
+    z-index: 2;
+}
+
+.coeur {
+    position: fixed;
+    color: red;
+    font-size: 20px;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh);
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -96,7 +130,7 @@ body {
     }
 
     #message {
-        font-size: 5vw;
+        font-size: 4vw;
     }
 
     .word {

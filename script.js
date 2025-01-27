@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+    let cursor = document.querySelector(".cursor");
+
+    document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+    });
+
     const words = [
         "mon amour",
         "my love",
@@ -128,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const heart = document.getElementById("heart");
         heart.style.transform = "translate(-50%, -50%) scale(1)";
         heart.addEventListener("click", () => {
+            setInterval(fallHeart, 300);
             heart.classList.add("clicked");
             setTimeout(() => {
                 document.getElementById("message").style.display = "block";
@@ -143,3 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Apparition du cœur
     setTimeout(showHeart, 2000);
 });
+
+const fallHeart = () => {
+    const coeur = document.createElement("div");
+
+    coeur.classList.add("coeur");
+    coeur.innerHTML = "💖";
+    coeur.style.left = Math.random() * 100 + "vw";
+    coeur.style.animationDuration = Math.random() * 2 + 3 + "s";
+    document.body.appendChild(coeur);
+
+    setTimeout(() => {
+        coeur.remove();
+    }, 5000);
+};
+// setInterval(fallHeart, 300);
