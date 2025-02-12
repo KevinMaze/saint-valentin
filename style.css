@@ -144,6 +144,23 @@ body::after {
     z-index: 1;
 }
 
+.btn {
+    position: relative;
+    color: red;
+    text-decoration: none;
+    font-size: 1.5em;
+    z-index: 3;
+    margin: 10px;
+}
+
+.btn:hover {
+    color: #ff6b70;
+}
+
+.btn.active {
+    color: #6b2629;
+}
+
 @keyframes fall {
     to {
         transform: translateY(105vh);

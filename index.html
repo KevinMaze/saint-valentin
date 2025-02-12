@@ -7,6 +7,12 @@
         <title>Pour mon amour ❤️</title>
     </head>
     <body>
+        <audio autoplay id="audio" src="./Louis Armstrong.mp3"></audio>
+        <a href="javascript:void(0)" onclick="changeState(0)" class="btn">Play</a>
+        <a href="javascript:void(0)" onclick="changeState(1)" class="btn">Pause</a>
+        <a href="javascript:void(0)" onclick="changeState(2)" class="btn active">Stop</a>
+
+
         <div class="cursor"></div>
         <div id="message">
             ❤️Mon amour, mon coeur, ma vie❤️ <br />
@@ -26,7 +32,6 @@
             />
         </svg>
 
-        <audio autoplay id="audio" src="Louis Armstrong.mp3"></audio>
 
         <script src="script.js"></script>
     </body>
