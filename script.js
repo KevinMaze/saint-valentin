@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "mana mīlestība",
     ];
 
-    const maxWords = 15; // Limite du nombre de mots à afficher en même temps
+    const maxWords = 20; // Limite du nombre de mots à afficher en même temps
     const activeWords = []; // Stocke les mots actuellement affichés
 
     function checkOverlap(x, y, width, height) {
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const index = activeWords.findIndex((w) => w.element === span);
         if (index !== -1) activeWords.splice(index, 1);
     }, 1000); // Attends que l'animation d'opacité soit terminée
-    }, 5000); // Durée d'affichage du mot
+    }, 7000); // Durée d'affichage du mot
 }
 
 function startWords() {
