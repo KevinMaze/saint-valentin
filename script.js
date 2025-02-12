@@ -1,3 +1,12 @@
+// const x = Math.min(
+//     Math.max(10, 60 + radius * Math.cos(angle * (Math.PI / 180))),
+//     90
+// ); // Position x
+// const y = Math.min(
+//     Math.max(10, 60 + radius * Math.sin(angle * (Math.PI / 180))),
+//     90
+// );
+
 document.addEventListener("DOMContentLoaded", () => {
     let cursor = document.querySelector(".cursor");
 
@@ -27,129 +36,122 @@ document.addEventListener("DOMContentLoaded", () => {
         "az én szerelmem",
         "môj milovaný",
         "miluji tě",
-        // "můj miláček",
-        // "la mia amata",
-        // "mijn lief",
-        // "min älskade",
-        // "min kjære",
-        // "min ástin",
-        // "min kærlighed",
-        // "mou agapi",
-        // "moja láska",
-        // "moja ljubavi",
-        // "mijn schat",
-        // "mīļotais",
-        // "miluju tě",
-        // "mily krasávec",
-        // "mein Liebling",
-        // "mi cielo",
-        // "mio amore",
-        // "mīlestība",
-        // "min dragoste",
-        // "mi amada",
-        // "mana mīlestība",
+        "můj miláček",
+        "la mia amata",
+        "mijn lief",
+        "min älskade",
+        "min kjære",
+        "min ástin",
+        "min kærlighed",
+        "mou agapi",
+        "moja láska",
+        "moja ljubavi",
+        "mijn schat",
+        "mīļotais",
+        "miluju tě",
+        "mily krasávec",
+        "mein Liebling",
+        "mi cielo",
+        "mio amore",
+        "mīlestība",
+        "min dragoste",
+        "mi amada",
+        "mana mīlestība",
     ];
 
-    const positions = [];
+    const maxWords = 15; // Limite du nombre de mots à afficher en même temps
+    const activeWords = []; // Stocke les mots actuellement affichés
 
-    function createWord(word) {
-        console.log(`Creating word: ${word}`);
-        const span = document.createElement("span");
-        span.textContent = word;
-        span.className = "word";
-
-        let isOverlapping;
-        let x, y;
-
-        //     // Position autour du cœur
-        //     const angle = Math.random() * 360; // Angle aléatoire
-        //     const radius = Math.random() * 200 + 150; // Distance aléatoire depuis le cœur
-        //     const x = Math.min(
-        //         Math.max(10, 50 + radius * Math.cos(angle * (Math.PI / 180))),
-        //         90
-        //     );
-        //     const y = Math.min(
-        //         Math.max(10, 50 + radius * Math.sin(angle * (Math.PI / 180))),
-        //         90
-        //     );
-
-        //     console.log(
-        //         `Word: ${word}, Angle: ${angle}, Radius: ${radius}, X: ${x}, Y: ${y}`
-        //     );
-
-        //     // Position et taille aléatoire
-        //     span.style.top = `calc(${y}% - 10px)`;
-        //     span.style.left = `calc(${x}% - 40px)`;
-        //     span.style.fontSize = Math.random() * 16 + 14 + "px";
-
-        //     // Ajout à la page
-        //     document.body.appendChild(span);
-
-        //     // Apparition progressive
-        //     setTimeout(() => {
-        //         span.classList.add("appear");
-        //     }, Math.random() * 2000);
-        // }
-        do {
-            isOverlapping = false;
-            const angle = Math.random() * 360; // Angle en degrés
-            const radius = Math.random() * 200 + 150; // Rayon
-            x = Math.min(
-                Math.max(10, 50 + radius * Math.cos(angle * (Math.PI / 180))),
-                90
-            ); // Position x
-            y = Math.min(
-                Math.max(10, 50 + radius * Math.sin(angle * (Math.PI / 180))),
-                90
-            );
-
-            // Vérifiez si la position chevauche une autre
-            for (const pos of positions) {
-                const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
-                if (distance < 10) {
-                    // Ajustez cette valeur selon la taille des mots
-                    isOverlapping = true;
-                    break;
-                }
-            }
-        } while (isOverlapping);
-
-        // Ajouter la position validée au tableau
-        positions.push({ x, y });
-
-        // Positionner le mot
-        span.style.top = `calc(${y}% - 10px)`;
-        span.style.left = `calc(${x}% - 40px)`;
-        span.style.fontSize = Math.random() * 16 + 14 + "px";
-
-        // Ajouter le mot au DOM
-        document.body.appendChild(span);
-
-        // Apparition progressive
-        setTimeout(() => {
-            span.classList.add("appear");
-        }, Math.random() * 2000);
-    }
-
-    function showHeart() {
-        const heart = document.getElementById("heart");
-        heart.style.transform = "translate(-50%, -50%) scale(1)";
-        heart.addEventListener("click", () => {
-            setInterval(fallHeart, 300);
-            heart.classList.add("clicked");
-            setTimeout(() => {
-                document.getElementById("message").style.display = "block";
-            }, 300);
+    function checkOverlap(x, y, width, height) {
+        // Vérifie si le nouveau mot entre en collision avec un mot existant
+        return activeWords.some((word) => {
+        return !(
+            x + width < word.x || // Trop à gauche
+            x > word.x + word.width || // Trop à droite
+            y + height < word.y || // Trop en haut
+            y > word.y + word.height // Trop en bas
+        );
         });
     }
 
-    // Affichage des mots
-    words.forEach((word, index) => {
-        setTimeout(() => createWord(word), index * 500);
-    });
+    function createWord() {
+    if (activeWords.length >= maxWords) {
+        // Supprime le mot le plus ancien pour limiter la surcharge
+        const oldWord = activeWords.shift();
+        oldWord.remove();
+    }
 
-    // Apparition du cœur
-    setTimeout(showHeart, 2000);
+    const word = words[Math.floor(Math.random() * words.length)];
+    const span = document.createElement("span");
+    span.textContent = word;
+    span.className = "word";
+
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 50; // Limite pour éviter une boucle infinie
+    do {
+        const angle = Math.random() * 360;
+        const radius = Math.random() * 200 + 150; // Distance du centre
+        x = Math.min( Math.max(10, 50 + radius * Math.cos(angle * (Math.PI / 180))), 90);
+        y = Math.min( Math.max(10, 50 + radius * Math.sin(angle * (Math.PI / 180))), 90);
+
+      // Calcule les dimensions du mot pour éviter les chevauchements
+    const fontSize = Math.random() * 16 + 14;
+    span.style.fontSize = fontSize + "px";
+    document.body.appendChild(span); // Ajout temporaire pour mesurer
+    const { offsetWidth: width, offsetHeight: height } = span;
+    span.remove(); // Supprime temporairement pour recalculer si nécessaire
+
+    if (!checkOverlap(x, y, width, height)) {
+        // Si pas de chevauchement, on valide la position
+        span.style.top = `calc(${y}% - ${height / 2}px)`;
+        span.style.left = `calc(${x}% - ${width / 2}px)`;
+        document.body.appendChild(span); // Réajout final au DOM
+        activeWords.push({ element: span, x, y, width, height });
+        break;
+    }
+
+    attempts++;
+    } while (attempts < maxAttempts);
+
+    // Si on atteint la limite d'essais, on n'ajoute pas le mot
+    if (attempts >= maxAttempts) return;
+
+    // Apparition progressive
+    span.style.opacity = "1";
+
+    // Suppression après 6 secondes
+    setTimeout(() => {
+    span.style.opacity = "0";
+    setTimeout(() => {
+        span.remove();
+        const index = activeWords.findIndex((w) => w.element === span);
+        if (index !== -1) activeWords.splice(index, 1);
+    }, 1000); // Attends que l'animation d'opacité soit terminée
+    }, 5000); // Durée d'affichage du mot
+}
+
+function startWords() {
+    setInterval(createWord, 1000); // Crée un mot toutes les secondes
+}
+
+  startWords(); // Démarre l'affichage dynamique des mots
+
+function showHeart() {
+    const heart = document.getElementById("heart");
+    heart.style.transform = "translate(-50%, -50%) scale(1)";
+    heart.addEventListener("click", () => {
+        setInterval(fallHeart, 300);
+        heart.classList.add("clicked");
+        setTimeout(() => {
+            document.getElementById("message").style.display = "block";
+        }, 300);
+    });
+}
+
+// Apparition du cœur
+setTimeout(showHeart, 2000);
+// generateWords();
 });
 
 const fallHeart = () => {
