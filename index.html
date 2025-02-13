@@ -7,10 +7,22 @@
         <title>Pour mon amour ❤️</title>
     </head>
     <body>
-        <audio autoplay id="audio" src="./Louis Armstrong.mp3"></audio>
-        <a href="javascript:void(0)" onclick="changeState(0)" class="btn">Play</a>
-        <a href="javascript:void(0)" onclick="changeState(1)" class="btn">Pause</a>
-        <a href="javascript:void(0)" onclick="changeState(2)" class="btn active">Stop</a>
+        <div id="controls">
+            <buton class="btn" data-action="play">Play</buton>
+            <buton class="btn" data-action="pause">Pause</buton>
+            <buton class="btn" data-action="stop">Stop</buton>
+        </div>
+
+        <div id="music-info">
+            <span id="music-title">Première musique lors de notre premier dîner</span>
+            <span id="timer">00:00 / 00:00</span>
+        </div>
+
+        <!-- <div id="volume-controls">
+            <button id="volume-down">-</button>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+            <button id="volume-up">+</button>
+        </div> -->
 
 
         <div class="cursor"></div>

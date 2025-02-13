@@ -7,7 +7,87 @@
 //     90
 // );
 
+
 document.addEventListener("DOMContentLoaded", () => {
+    const audio = new Audio("./Louis Armstrong.mp3");
+    const timer = document.getElementById("timer");
+    // const musicTitle = document.getElementById("music-title");
+    // const volumeSlider = document.getElementById("volume-slider");
+    // const volumeDown = document.getElementById("volume-down");
+    // const volumeUp = document.getElementById("volume-up");
+
+    let isPlaying = false;
+
+      // Fonction pour formater le temps en minutes:secondes
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+        return `${minutes}:${secs}`;
+    }
+
+      // Met à jour le timer de la musique
+    function updateTimer() {
+        timer.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    }
+
+    function changeState(action) {
+    const btns = document.querySelectorAll(".btn");
+
+    // Réinitialise les boutons actifs
+    btns.forEach((btn) => btn.classList.remove("active"));
+
+    // Exécute l'action selon le bouton cliqué
+    if (action === "play") {
+        if (!isPlaying) {
+        audio.play();
+        isPlaying = true;
+        }
+    } else if (action === "pause") {
+        audio.pause();
+        isPlaying = false;
+    } else if (action === "stop") {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+    }
+
+      // Met à jour le volume
+    // function setVolume(value) {
+    //     audio.volume = Math.min(Math.max(value, 0), 1); // Garde la valeur entre 0 et 1
+    //     volumeSlider.value = audio.volume;
+    // }
+
+    // Ajoute la classe active au bouton correspondant
+    const activeBtn = document.querySelector(`.btn[data-action="${action}"]`);
+    if (activeBtn) activeBtn.classList.add("active");
+    }
+
+        // Ajoute les événements aux boutons
+        document.querySelectorAll(".btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const action = btn.getAttribute("data-action");
+            changeState(action);
+        });
+    });
+
+      // Événements de contrôle du volume
+    // volumeSlider.addEventListener("input", () => setVolume(volumeSlider.value));
+    // volumeDown.addEventListener("click", () => setVolume(audio.volume - 0.1));
+    // volumeUp.addEventListener("click", () => setVolume(audio.volume + 0.1));
+
+    // Met à jour le timer toutes les secondes
+    audio.addEventListener("timeupdate", updateTimer);
+
+    // Affiche la durée totale lorsque le fichier est chargé
+    audio.addEventListener("loadedmetadata", () => {
+        timer.textContent = `00:00 / ${formatTime(audio.duration)}`;
+    });
+
+    // Réinitialise les états à la fin de la musique
+    audio.addEventListener("ended", () => {
+        changeState("stop");
+    });
+
     let cursor = document.querySelector(".cursor");
 
     document.addEventListener("mousemove", (e) => {
@@ -172,7 +252,8 @@ const fallHeart = () => {
 
 function changeState() {
     let btns = document.querySelectorAll(".btn");
-    let audio = document.getElementById("#audio");
+    let audio = new Audio("./Louis Armstrong.mp3");
+    // let audio = document.getElementById("#audio");
     for (let i = 0; i < btns.length; i++) {
         btns[i].classList.remove("active");
     }
@@ -189,3 +270,4 @@ function changeState() {
         audio.currentTime = 0;
     }
 }
+

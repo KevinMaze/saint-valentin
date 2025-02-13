@@ -144,10 +144,11 @@ body::after {
     z-index: 1;
 }
 
-.btn {
+/* MUSIC */
+
+.btn, #volume-down, #volume-up, #music-title, #timer {
     position: relative;
     color: red;
-    text-decoration: none;
     font-size: 1.5em;
     z-index: 3;
     margin: 10px;
@@ -161,6 +162,16 @@ body::after {
     color: #6b2629;
 }
 
+#controls, #music-info, #volume-controls {
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    margin : 10px 0;
+    gap: 10px;
+    z-index: 3;
+    cursor: none;
+}
+
 @keyframes fall {
     to {
         transform: translateY(105vh);
@@ -170,7 +181,12 @@ body::after {
 @media screen and (max-width: 1200px) {
     #message {
         font-size: 2vw;
-    }  
+    }
+    
+    #heart {
+        width: 60vw;
+        height: 60vw;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -185,6 +201,15 @@ body::after {
 
     .word {
         font-size: 3vw;
+    }
+
+    #controls, #music-info{
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .btn, #volume-down, #volume-up, #music-title, #timer{
+        font-size: 1em;
     }
 }
 
@@ -202,3 +227,5 @@ body::after {
         font-size: 4vw;
     }
 }
+
+
